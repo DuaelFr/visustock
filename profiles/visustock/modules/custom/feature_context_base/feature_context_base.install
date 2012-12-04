@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * Code for the Feature Context Base feature install.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function feature_context_base_install() {
+  $bean = bean_create(array('type' => 'simple'));
+  $bean->label = 'Introduction accueil';
+  $bean->title = 'A modifier';
+  $bean->delta = 'visustock-home-block';
+  $bean->field_content = array(
+    LANGUAGE_NONE => array(array(
+      'value' => '<p>A remplir</p>',
+      'format' => 'full_html',
+    )),
+  );
+  $bean->save();
+}
