@@ -19,7 +19,7 @@ function visustock_install() {
   if (!is_dir(__DIR__ . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $theme_name)) {
     $subtheme = new stdClass();
     $subtheme->new = TRUE;
-    $subtheme->name = ucfisrt($theme_name);
+    $subtheme->name = ucfirst($theme_name);
     $subtheme->machine_name = $theme_name;
     $subtheme->starterkit = 'starterkit_omega_html5';
     $subtheme->path = __DIR__ . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $subtheme->machine_name;
