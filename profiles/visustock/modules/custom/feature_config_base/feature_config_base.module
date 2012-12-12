@@ -6,6 +6,10 @@
 
 include_once 'feature_config_base.features.inc';
 
+/*******************************************************************************
+ * COMMON VIEW MODES
+ ******************************************************************************/
+
 /**
  * Implements hook_entity_info_alter().
  */
@@ -19,6 +23,10 @@ function feature_config_base_entity_info_alter(&$entity_info) {
     'custom settings' => TRUE,
   );
 }
+
+/*******************************************************************************
+ * EMPTY FRONT PAGE
+ ******************************************************************************/
 
 /**
  * Implements hook_menu().
@@ -40,4 +48,78 @@ function feature_config_base_menu() {
 function _feature_config_base_menu_frontpage() {
   drupal_set_title('');
   return '';
+}
+
+/*******************************************************************************
+ * CUT DS TITLE FIELD
+ ******************************************************************************/
+
+/**
+ * Implements hook_ds_fields_info_alter().
+ */
+function feature_config_base_ds_fields_info_alter(&$fields, $entity_type) {
+  if ($entity_type == 'node') {
+    if (empty($fields['title']['properties']['formatters'])) {
+      $fields['title']['properties']['formatters'] = array();
+      $fields['title']['properties']['formatters']['default'] = t('Default');
+    }
+    $fields['title']['properties']['formatters']['feature_config_base_ds_cut_title'] = t('Cut title');
+
+    $fields['title']['properties']['settings']['length'] = array(
+      'type' => 'textfield',
+      'description' => 'Max length. 0 for unlimited.'
+    );
+    $fields['title']['properties']['default']['length'] = 0;
+
+    $fields['title']['properties']['old_function'] = $fields['title']['function'];
+    $fields['title']['function'] = 'feature_config_base_ds_render_title';
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ */
+function feature_config_base_field_formatter_settings_summary_alter(&$summary, $context) {
+  if ($context['formatter'] == 'feature_config_base_ds_cut_title') {
+    if (!empty($context['field']['formatter_settings']['length'])) {
+      $summary = str_replace('Length: ' . t('Yes') . '<br />', 'Length: ' . $context['field']['formatter_settings']['length'] . '<br />', $summary);
+    }
+  }
+  else {
+    $summary = preg_replace('#Length: (.*?)<br />#', '', $summary);
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_form_alter().
+ */
+function feature_config_base_field_formatter_settings_form_alter(&$form, $context) {
+  if ($context['formatter'] == 'feature_config_base_ds_cut_title') {
+    $form['length']['#type'] = 'textfield';
+  }
+  else {
+    $form['length']['#type'] = 'hidden';
+  }
+}
+
+function feature_config_base_ds_render_title($field) {
+  if (!empty($field['formatter_settings']['length'])) {
+    $length = $field['formatter_settings']['length'] - 3;
+    // Clone original field to avoid side effects
+    $tmp = $field;
+    $tmp['entity'] = clone $field['entity'];
+    // Alter title before sending to the render function
+    if (strlen($tmp['entity']->title) > $length) {
+      $tmp['entity']->full_title = $tmp['entity']->title;
+      $tmp['entity']->title = substr($tmp['entity']->title, 0, $length) . '...';
+    }
+    $result = ds_render_field($tmp);
+    if (!empty($tmp['entity']->full_title)) {
+      $result = str_replace('<a', '<a title="' . $tmp['entity']->full_title . '"', $result);
+    }
+  }
+  else {
+    $result = ds_render_field($field);
+  }
+  return $result;
 }
