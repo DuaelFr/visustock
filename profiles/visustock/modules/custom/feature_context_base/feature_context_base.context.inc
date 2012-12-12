@@ -32,9 +32,9 @@ function feature_context_base_context_default_contexts() {
           'region' => 'content',
           'weight' => '0',
         ),
-        'nice_menus-1' => array(
-          'module' => 'nice_menus',
-          'delta' => '1',
+        'system-main-menu' => array(
+          'module' => 'system',
+          'delta' => 'main-menu',
           'region' => 'menu',
           'weight' => '-10',
         ),

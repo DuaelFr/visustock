@@ -5,3 +5,20 @@
  */
 
 include_once 'feature_context_base.features.inc';
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function feature_context_base_block_view_alter(&$data, $block) {
+  $no_title_blocks = array(
+    'system' => array(
+      'main-menu',
+    ),
+    'menu' => array(
+      'menu-footer-menu',
+    ),
+  );
+  if (!empty($no_title_blocks[$block->module]) && in_array($block->delta, $no_title_blocks[$block->module])) {
+    $data['subject'] = '';
+  }
+}
