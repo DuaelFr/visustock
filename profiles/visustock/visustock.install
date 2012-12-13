@@ -16,13 +16,13 @@ function visustock_install() {
   $theme_name = basename(__DIR__);
 
   // Use omega_tools to create the subtheme if it does not exists.
-  if (!is_dir(__DIR__ . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $theme_name)) {
+  if (!is_dir(__DIR__ . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'custom' . DIRECTORY_SEPARATOR . $theme_name)) {
     $subtheme = new stdClass();
     $subtheme->new = TRUE;
     $subtheme->name = ucfirst($theme_name);
     $subtheme->machine_name = $theme_name;
     $subtheme->starterkit = 'starterkit_omega_html5';
-    $subtheme->path = __DIR__ . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . $subtheme->machine_name;
+    $subtheme->path = __DIR__ . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . 'custom' . DIRECTORY_SEPARATOR . $subtheme->machine_name;
     $subtheme->base = 'omega';
     $subtheme->default = FALSE;
     $subtheme->status = TRUE;
