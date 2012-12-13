@@ -26,6 +26,9 @@ function feature_config_editors_wysiwyg_default_profiles() {
           'Italic' => 1,
           'Underline' => 1,
         ),
+        'Linkit' => array(
+          'Linkit' => 1,
+        ),
       ),
       'toolbar_loc' => 'top',
       'toolbar_align' => 'left',
@@ -87,6 +90,9 @@ function feature_config_editors_wysiwyg_default_profiles() {
         ),
         'imce' => array(
           'imce' => 1,
+        ),
+        'Linkit' => array(
+          'Linkit' => 1,
         ),
         'drupal' => array(
           'break' => 1,
