@@ -17,8 +17,108 @@ function feature_context_base_block_view_alter(&$data, $block) {
     'menu' => array(
       'menu-footer-menu',
     ),
+    'menu_block' => array(
+      'visustock-second-level',
+    ),
   );
   if (!empty($no_title_blocks[$block->module]) && in_array($block->delta, $no_title_blocks[$block->module])) {
     $data['subject'] = '';
   }
+}
+
+/**
+ * Implements hook_menu_block_blocks().
+ */
+function feature_context_base_menu_block_blocks() {
+  return array(
+    // The array key is the block id used by menu block.
+    'visustock-second-level' => array(
+      // Use the array keys/values described in menu_tree_build().
+      'menu_name'   => MENU_TREE__CURRENT_PAGE_MENU,
+      'parent_mlid' => 0,
+      'title_link'  => FALSE,
+      'admin_title' => 'Block main second level',
+      'level'       => 2,
+      'follow'      => 1,
+      'depth'       => -1,
+      'expanded'    => TRUE,
+      'sort'        => FALSE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function feature_context_base_block_info() {
+  return array(
+    'visustock-header-title' => array(
+      'info' => 'Header title',
+    ),
+    'visustock-spacer' => array(
+      'info' => 'Spacer',
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function feature_context_base_block_view($delta = '') {
+  $block = array();
+  if ($delta == 'visustock-header-title') {
+    $block['subject'] = '';
+    $block['content'] = _feature_context_header_title();
+  }
+  elseif ($delta == 'visustock-spacer') {
+    $block['subject'] = '';
+    $block['content'] = '&nbsp;';
+  }
+  return $block;
+}
+
+/**
+ * Header title block content callback.
+ */
+function _feature_context_header_title() {
+  $result = '';
+  $wrapper = 'h2';
+  $attr = array();
+  $menu = menu_get_active_trail();
+
+  // The current page is a root or is not in a menu
+  if (count($menu) == 2) {
+
+    if (empty($menu[1]['menu_name']) || $menu[1]['menu_name'] != 'navigation') {
+      $result = drupal_get_title();
+      $wrapper = 'h1';
+      $attr['class'] = 'title';
+      $attr['id'] = 'page-title';
+      // Clear the title to avoid duplicated h1 in the page
+      drupal_set_title('');      
+    }
+    else {
+      // @TODO find something better
+      $result = 'Toutes les actualités';
+    }
+  }
+  elseif (!empty($menu[1]['link_path']) && $menu[1]['link_path'] != '<firstchild>') {
+    $item = menu_get_item($menu[1]['link_path']);
+    $title_callback_args = menu_unserialize($item['title_arguments'], $item['map']);
+    if ($item['title_callback'] == 't' && empty($title_callback_args)) {
+      $result = t($item['title']);
+    }
+    else {
+      $result = call_user_func_array($item['title_callback'], $title_callback_args);
+    }
+  }
+  else {
+    $result = $menu[1]['title'];
+  }
+
+  if (!empty($result)) {
+    $result = '<' . $wrapper . drupal_attributes($attr) . '>' . $result . '</' . $wrapper . '>';
+  }
+
+  return $result;
 }

@@ -36,13 +36,13 @@ function feature_context_base_context_default_contexts() {
           'module' => 'system',
           'delta' => 'main-menu',
           'region' => 'menu',
-          'weight' => '-10',
+          'weight' => '0',
         ),
         'menu-menu-footer-menu' => array(
           'module' => 'menu',
           'delta' => 'menu-footer-menu',
           'region' => 'footer_first',
-          'weight' => '-10',
+          'weight' => '0',
         ),
       ),
     ),
@@ -75,13 +75,13 @@ function feature_context_base_context_default_contexts() {
           'module' => 'bean',
           'delta' => 'visustock-home-block',
           'region' => 'postscript_first',
-          'weight' => '-10',
+          'weight' => '0',
         ),
         'views-news-home_block' => array(
           'module' => 'views',
           'delta' => 'news-home_block',
           'region' => 'postscript_second',
-          'weight' => '-10',
+          'weight' => '0',
         ),
       ),
     ),
@@ -107,7 +107,30 @@ function feature_context_base_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array();
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'feature_context_base-visustock-spacer' => array(
+          'module' => 'feature_context_base',
+          'delta' => 'visustock-spacer',
+          'region' => 'sidebar_first',
+          'weight' => '1',
+        ),
+        'menu_block-visustock-second-level' => array(
+          'module' => 'menu_block',
+          'delta' => 'visustock-second-level',
+          'region' => 'sidebar_first',
+          'weight' => '0',
+        ),
+        'feature_context_base-visustock-header-title' => array(
+          'module' => 'feature_context_base',
+          'delta' => 'visustock-header-title',
+          'region' => 'header_first',
+          'weight' => '0',
+        ),
+      ),
+    ),
+  );
   $context->condition_mode = 0;
 
   // Translatables
