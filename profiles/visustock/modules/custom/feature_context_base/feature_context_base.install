@@ -19,4 +19,16 @@ function feature_context_base_install() {
     )),
   );
   $bean->save();
+
+  $bean = bean_create(array('type' => 'header'));
+  $bean->label = 'Header accueil';
+  $bean->title = '';
+  $bean->delta = 'visustock-home-header';
+  $bean->field_button = array(
+    LANGUAGE_NONE => array(array(
+      'url' => 'visustock/register',
+      'title' => 'Demandez un essai GRATUIT immédiat',
+    )),
+  );
+  $bean->save();
 }

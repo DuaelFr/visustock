@@ -71,6 +71,12 @@ function feature_context_base_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'bean-visustock-home-header' => array(
+          'module' => 'bean',
+          'delta' => 'visustock-home-header',
+          'region' => 'header_first',
+          'weight' => '0',
+        ),
         'bean-visustock-home-block' => array(
           'module' => 'bean',
           'delta' => 'visustock-home-block',

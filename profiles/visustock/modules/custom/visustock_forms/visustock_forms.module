@@ -1,0 +1,71 @@
+<?php
+/**
+ * @file
+ * Code for the VisuStock Forms module.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function visustock_forms_menu() {
+  $items = array();
+
+  $items['visustock/login'] = array(
+    'page callback' => 'drupal_get_form',
+    'page argument' => 'visustock_forms_login_form',
+    'access callback' => TRUE,
+  );
+  $items['visustock/signup'] = array(
+    'page callback' => 'drupal_get_form',
+    'page argument' => 'visustock_forms_signup_form',
+    'access callback' => TRUE,
+  );
+  $items['visustock/lost-password'] = array(
+    'page callback' => 'drupal_get_form',
+    'page argument' => 'visustock_forms_lost_password_form',
+    'access callback' => TRUE,
+  );
+  $items['visustock/retreive-password'] = array(
+    'page callback' => 'drupal_get_form',
+    'page argument' => 'visustock_forms_retreive_password_form',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+/**
+ * Form visustock_forms_login_form callback.
+ */
+function visustock_forms_login_form() {
+  $form = array();
+
+  return $form;
+}
+
+/**
+ * Form visustock_forms_signup_form callback.
+ */
+function visustock_forms_signup_form() {
+  $form = array();
+
+  return $form;
+}
+
+/**
+ * Form visustock_forms_lost_password_form callback.
+ */
+function visustock_forms_lost_password_form() {
+  $form = array();
+
+  return $form;
+}
+
+/**
+ * Form visustock_forms_retreive_password_form callback.
+ */
+function visustock_forms_retreive_password_form() {
+  $form = array();
+
+  return $form;
+}

@@ -104,12 +104,14 @@ function _feature_context_header_title() {
   }
   elseif (!empty($menu[1]['link_path']) && $menu[1]['link_path'] != '<firstchild>') {
     $item = menu_get_item($menu[1]['link_path']);
-    $title_callback_args = menu_unserialize($item['title_arguments'], $item['map']);
-    if ($item['title_callback'] == 't' && empty($title_callback_args)) {
-      $result = t($item['title']);
-    }
-    else {
-      $result = call_user_func_array($item['title_callback'], $title_callback_args);
+    if ($item) {
+      $title_callback_args = menu_unserialize($item['title_arguments'], $item['map']);
+      if ($item['title_callback'] == 't' && empty($title_callback_args)) {
+        $result = t($item['title']);
+      }
+      else {
+        $result = call_user_func_array($item['title_callback'], $title_callback_args);
+      }      
     }
   }
   else {
