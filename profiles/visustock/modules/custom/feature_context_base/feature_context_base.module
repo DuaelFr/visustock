@@ -82,13 +82,12 @@ function feature_context_base_block_view($delta = '') {
  */
 function _feature_context_header_title() {
   $result = '';
-  $wrapper = 'h2';
+  $wrapper = &drupal_static('feature_context_header_title_wrapper', 'h2');
   $attr = array();
   $menu = menu_get_active_trail();
 
   // The current page is a root or is not in a menu
   if (count($menu) == 2) {
-
     if (empty($menu[1]['menu_name']) || $menu[1]['menu_name'] != 'navigation') {
       $result = drupal_get_title();
       $wrapper = 'h1';
@@ -123,4 +122,14 @@ function _feature_context_header_title() {
   }
 
   return $result;
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function feature_context_base_preprocess_html(&$variables) {
+  $wrapper = &drupal_static('feature_context_header_title_wrapper', FALSE);
+  if ($wrapper !== FALSE) {
+    $variables['classes_array'][] = 'visustock-wrapped-' . $wrapper;
+  }
 }
