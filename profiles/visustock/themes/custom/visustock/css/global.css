@@ -1,2 +1,48 @@
-/* This file will hold styles for the mobile version of your website (mobile first). */
-/* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
+/*******************************************************************************
+ * LAYOUT
+ ******************************************************************************/
+
+/* Header */
+.zone-branding {}
+
+/* Main menu */
+.region-menu {}
+
+/* Sub header */
+.region-header-first {}
+
+/* Home: left */
+.region-postscript-first {}
+
+/* Home: right */
+.region-postscript-second {}
+
+/* Left sidebar */
+.region-sidebar-first {}
+
+/* Main content */
+.region-content {}
+
+/* Footer */
+.section-footer {}
+
+/*******************************************************************************
+ * BLOCKS
+ ******************************************************************************/
+
+/* Main menu block */
+.block-system-main-menu {}
+.block-system-main-menu li ul { display: none; }
+
+/* Left menu block */
+.block-visustock-second-level {}
+
+/* Home block news */
+.block-news-home-block {}
+
+/* Footer Menu */
+.block-menu-footer-menu ul { text-align: center; }
+.block-menu-footer-menu ul li { display: inline; list-style: none; margin: 0; padding: 0; }
+.block-menu-footer-menu ul li:after { content: " |"; display: inline; }
+.block-menu-footer-menu ul li.last:after { content: ""; }
+.block-menu-footer-menu ul li a {}
