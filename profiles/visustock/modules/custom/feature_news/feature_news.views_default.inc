@@ -22,7 +22,7 @@ function feature_news_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Actualités';
+  $handler->display->display_options['title'] = 'Toutes les actualités';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_text'] = 'plus';
   $handler->display->display_options['access']['type'] = 'perm';
@@ -88,7 +88,7 @@ function feature_news_views_default_views() {
   /* Display: Home (Block) */
   $handler = $view->new_display('block', 'Home (Block)', 'home_block');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Dernières Actualités';
+  $handler->display->display_options['title'] = 'Actualités';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['use_more'] = FALSE;
   $handler->display->display_options['use_more'] = TRUE;
@@ -136,7 +136,7 @@ function feature_news_views_default_views() {
   $handler->display->display_options['filters']['promote']['value'] = '1';
   $translatables['news'] = array(
     t('Master'),
-    t('Actualités'),
+    t('Toutes les actualités'),
     t('plus'),
     t('Appliquer'),
     t('Réinitialiser'),
@@ -154,8 +154,7 @@ function feature_news_views_default_views() {
     t('<p class="empty">Il n\'y a pas d\'actualité publiée actuellement.</p>'),
     t('List (Page)'),
     t('Home (Block)'),
-    t('Dernières Actualités'),
-    t('Toutes les actualités'),
+    t('Actualités'),
   );
   $export['news'] = $view;
 

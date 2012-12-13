@@ -5,3 +5,26 @@
  */
 
 include_once 'feature_news.features.inc';
+
+/**
+ * Implements hook_block_info().
+ */
+function feature_news_block_info() {
+  return array(
+    'visustock-back-news' => array(
+      'info' => 'News back button',
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function feature_news_block_view($delta = '') {
+  $block = array();
+  if ($delta == 'visustock-back-news') {
+    $block['subject'] = '';
+    $block['content'] = l('Retour à la liste des actualités', 'news');
+  }
+  return $block;
+}

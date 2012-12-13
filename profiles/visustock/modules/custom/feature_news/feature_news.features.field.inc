@@ -48,10 +48,8 @@ function feature_news_field_default_fields() {
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
-          'settings' => array(
-            'trim_length' => '150',
-          ),
-          'type' => 'text_summary_or_trimmed',
+          'settings' => array(),
+          'type' => 'text_default',
           'weight' => '3',
         ),
         'home' => array(
@@ -64,10 +62,13 @@ function feature_news_field_default_fields() {
           'weight' => '4',
         ),
         'list' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(
+            'trim_length' => '600',
+          ),
+          'type' => 'text_summary_or_trimmed',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'hidden',
@@ -138,12 +139,16 @@ function feature_news_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'image',
+          'module' => 'colorbox',
           'settings' => array(
-            'image_link' => 'content',
-            'image_style' => 'news_home',
+            'colorbox_caption' => 'auto',
+            'colorbox_caption_custom' => '',
+            'colorbox_gallery' => 'none',
+            'colorbox_gallery_custom' => '',
+            'colorbox_image_style' => '',
+            'colorbox_node_style' => 'news_large',
           ),
-          'type' => 'image',
+          'type' => 'colorbox',
           'weight' => '0',
         ),
         'home' => array(
@@ -157,10 +162,14 @@ function feature_news_field_default_fields() {
           'weight' => '0',
         ),
         'list' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'label' => 'hidden',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => 'content',
+            'image_style' => 'news_list',
+          ),
+          'type' => 'image',
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
