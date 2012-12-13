@@ -50,7 +50,7 @@ function feature_news_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '3',
+          'weight' => '2',
         ),
         'home' => array(
           'label' => 'hidden',
