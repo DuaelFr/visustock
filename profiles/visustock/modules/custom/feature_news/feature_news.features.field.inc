@@ -54,20 +54,20 @@ function feature_news_field_default_fields() {
         ),
         'home' => array(
           'label' => 'hidden',
-          'module' => 'text',
+          'module' => 'feature_config_base',
           'settings' => array(
             'trim_length' => '150',
           ),
-          'type' => 'text_trimmed',
+          'type' => 'text_plain_trimmed',
           'weight' => '4',
         ),
         'list' => array(
           'label' => 'hidden',
-          'module' => 'text',
+          'module' => 'feature_config_base',
           'settings' => array(
             'trim_length' => '600',
           ),
-          'type' => 'text_summary_or_trimmed',
+          'type' => 'text_plain_trimmed',
           'weight' => '4',
         ),
         'teaser' => array(

@@ -69,6 +69,11 @@ function feature_news_ds_field_settings_info() {
         'length' => '0',
       ),
     ),
+    'node_link' => array(
+      'weight' => '5',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
     'post_date' => array(
       'weight' => '3',
       'label' => 'inline',
@@ -165,6 +170,7 @@ function feature_news_ds_layout_settings_info() {
         2 => 'group_content',
         3 => 'post_date',
         4 => 'body',
+        5 => 'node_link',
       ),
     ),
     'fields' => array(
@@ -173,6 +179,7 @@ function feature_news_ds_layout_settings_info() {
       'group_content' => 'ds_content',
       'post_date' => 'ds_content',
       'body' => 'ds_content',
+      'node_link' => 'ds_content',
     ),
     'classes' => array(),
     'wrappers' => array(

@@ -57,7 +57,8 @@ function feature_news_field_group_info() {
     'weight' => '2',
     'children' => array(
       0 => 'body',
-      1 => 'post_date',
+      1 => 'node_link',
+      2 => 'post_date',
     ),
     'format_type' => 'div',
     'format_settings' => array(
