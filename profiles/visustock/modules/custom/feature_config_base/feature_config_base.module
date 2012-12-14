@@ -123,3 +123,75 @@ function feature_config_base_ds_render_title($field) {
   }
   return $result;
 }
+
+/*******************************************************************************
+ * FORMATTERS
+ ******************************************************************************/
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function feature_config_base_field_formatter_info() {
+  return array(
+    'text_plain_trimmed' => array(
+      'label' => t('Trimmed plain text'),
+      'field types' => array('text', 'text_long', 'text_with_summary'),
+      'settings' => array(
+        'trim_length' => 600,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function feature_config_base_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $settings = $display['settings'];
+
+  $render = array();
+
+  foreach ($items as $delta => $item) {
+    $output = _text_sanitize($instance, $langcode, $item, 'value');
+    $output = filter_xss($output, array());
+    $output = substr($output, 0, $settings['trim_length']);
+    $render[$delta] = array(
+      '#markup' => '<p>' . $output . '</p>',
+    );
+  }
+
+  return $render;
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function feature_config_base_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  $elements = array();
+
+  $elements['trim_length'] = array(
+    '#title' => t('Length'), 
+    '#type' => 'textfield', 
+    '#size' => 20, 
+    '#default_value' => $settings['trim_length'], 
+    '#element_validate' => array('element_validate_integer_positive'), 
+    '#required' => TRUE,
+  );
+
+  return $elements;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function feature_config_base_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  if ($settings['trim_length'] > 0) {
+    return t('Trim length') . ': ' . $settings['trim_length'];
+  }
+}
