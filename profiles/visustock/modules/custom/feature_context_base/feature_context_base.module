@@ -86,9 +86,23 @@ function _feature_context_header_title() {
   $attr = array();
   $menu = menu_get_active_trail();
 
+  $item = FALSE;
+  $title_callback_args = array();
+  if (!empty($menu[1]['link_path']) && substr($menu[1]['link_path'], 0, 1) != '<') {
+    $item = menu_get_item($menu[1]['link_path']);
+    if ($item) {
+      $title_callback_args = menu_unserialize($item['title_arguments'], $item['map']);
+    }
+  }
+
   // The current page is a root or is not in a menu
   if (count($menu) == 2) {
-    if (empty($menu[1]['menu_name']) || $menu[1]['menu_name'] != 'navigation') {
+    // Special case for news nodes
+    if (!empty($menu[1]['map']) && $menu[1]['map'][0] == 'node' && $menu[1]['map'][1]->type == 'news') {
+      $result = 'Toutes les actualités';
+    }
+    // Other nodes or lonely pages
+    else {
       $result = drupal_get_title();
       $wrapper = 'h1';
       $attr['class'] = 'title';
@@ -96,27 +110,22 @@ function _feature_context_header_title() {
       // Clear the title to avoid duplicated h1 in the page
       drupal_set_title('');      
     }
+  }
+  // If a router item exists, use it
+  elseif ($item) {
+    if ($item['title_callback'] == 't' && empty($title_callback_args)) {
+      $result = t($item['title']);
+    }
     else {
-      // @TODO find something better
-      $result = 'Toutes les actualités';
-    }
+      $result = call_user_func_array($item['title_callback'], $title_callback_args);
+    }      
   }
-  elseif (!empty($menu[1]['link_path']) && $menu[1]['link_path'] != '<firstchild>') {
-    $item = menu_get_item($menu[1]['link_path']);
-    if ($item) {
-      $title_callback_args = menu_unserialize($item['title_arguments'], $item['map']);
-      if ($item['title_callback'] == 't' && empty($title_callback_args)) {
-        $result = t($item['title']);
-      }
-      else {
-        $result = call_user_func_array($item['title_callback'], $title_callback_args);
-      }      
-    }
-  }
+  // If no router item exists, just keep the title
   else {
     $result = $menu[1]['title'];
   }
 
+  // Prepare the result
   if (!empty($result)) {
     $result = '<' . $wrapper . drupal_attributes($attr) . '>' . $result . '</' . $wrapper . '>';
   }
