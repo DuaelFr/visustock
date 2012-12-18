@@ -397,7 +397,7 @@ input[type="submit"]:hover,
 
 /* Content */
 /*---------*/
-.block-system-main h1,
+.region-content h1,
 .visustock-wrapped-h1 .block-system-main h2 {
     color: #3399ff;
     font-weight: normal;
