@@ -4,6 +4,10 @@
  * Code for the VisuStock Forms module.
  */
 
+define('VISUSTOCK_FORMS_APP_URL_VARIABLE', 'visustock_forms_app_url');
+// @TODO Real URL
+define('VISUSTOCK_FORMS_APP_URL_DEFAULT', 'http://local.visustock.fr');
+
 /**
  * Implements hook_menu().
  */
@@ -11,28 +15,36 @@ function visustock_forms_menu() {
   $items = array();
 
   $items['visustock/login'] = array(
+    'title' => t('Log in'),
     'page callback' => 'drupal_get_form',
-    'page argument' => 'visustock_forms_login_form',
-    'access callback' => TRUE,
-  );
-  $items['visustock/signup'] = array(
-    'page callback' => 'drupal_get_form',
-    'page argument' => 'visustock_forms_signup_form',
+    'page arguments' => array('visustock_forms_login_form'),
     'access callback' => TRUE,
   );
   $items['visustock/lost-password'] = array(
+    'title' => t('Lost password'),
     'page callback' => 'drupal_get_form',
-    'page argument' => 'visustock_forms_lost_password_form',
+    'page arguments' => array('visustock_forms_lost_password_form'),
     'access callback' => TRUE,
   );
-  $items['visustock/retreive-password'] = array(
+  $items['visustock/retrieve-password'] = array(
+    'title' => t('Lost password'),
     'page callback' => 'drupal_get_form',
-    'page argument' => 'visustock_forms_retreive_password_form',
+    'page arguments' => array('visustock_forms_retrieve_password_form'),
+    'access callback' => TRUE,
+  );
+  $items['visustock/register'] = array(
+    'title' => t('Register'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('visustock_forms_register_form'),
     'access callback' => TRUE,
   );
 
   return $items;
 }
+
+//------------------------------------------------------------------------------
+// LOG IN FORM
+//------------------------------------------------------------------------------
 
 /**
  * Form visustock_forms_login_form callback.
@@ -40,17 +52,99 @@ function visustock_forms_menu() {
 function visustock_forms_login_form() {
   $form = array();
 
+  $form['messages'] = array(
+    '#markup' => '<div id="visustock-forms-login-form-messages"></div>',
+    '#type' => 'markup',
+  );
+
+  $form['company'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#title' => t('Entreprise'),
+    '#type' => 'textfield',
+  );
+  if (!empty($_COOKIE['Drupal_visitor_visustock_login_company'])) {
+    $form['company']['#default_value'] = $_COOKIE['Drupal_visitor_visustock_login_company'];
+  }
+
+  $form['username'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#title' => t('Nom d\'utilisateur'),
+    '#type' => 'textfield',
+  );
+  if (!empty($_COOKIE['Drupal_visitor_visustock_login_username'])) {
+    $form['username']['#default_value'] = $_COOKIE['Drupal_visitor_visustock_login_username'];
+  }
+
+  $form['password'] = array(
+    '#required' => TRUE,
+    '#title' => t('Mot de passe'),
+    '#type' => 'password',
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Log in'),
+    '#ajax' => array(
+      'callback' => 'visustock_forms_login_callback',
+      'progress' => array(
+        'type' => 'throbber',
+        'message' => t('Please wait...'),
+      ),
+      'effect' => 'fade',
+    ),
+  );
+
   return $form;
 }
 
 /**
- * Form visustock_forms_signup_form callback.
+ * AjaX callback for the visustock_login_form submission.
  */
-function visustock_forms_signup_form() {
-  $form = array();
+function visustock_forms_login_callback($form, $form_state) {
+  $commands = array();
 
-  return $form;
+  $errors = form_get_errors();
+  if (empty($errors)) {
+    user_cookie_save(array(
+      'visustock_login_company' => $form_state['values']['company'],
+      'visustock_login_username' => $form_state['values']['username'],
+    ));
+
+    // @TODO Real URL
+    $url = variable_get(VISUSTOCK_FORMS_APP_URL_VARIABLE, VISUSTOCK_FORMS_APP_URL_DEFAULT);
+//    $url .= '/test';
+    $data = array(
+      'company' => $form_state['values']['company'],
+      'username' => $form_state['values']['username'],
+      'password' => $form_state['values']['password'],
+    );
+    $result = _visustock_forms_http_request($url, $data);
+    if (!empty($result)) {
+      // @TODO Real condition
+      if (true) {
+        ctools_include('ajax');
+        ctools_add_js('ajax-responder');
+        drupal_set_message('Vous avez bien été authentifié. Veuillez patienter, vous allez être redirigé vers l\'application dans quelques secondes...', 'status');
+        $commands[] = ctools_ajax_command_redirect(variable_get(VISUSTOCK_FORMS_APP_URL_VARIABLE, VISUSTOCK_FORMS_APP_URL_DEFAULT));
+      }
+      else {
+        // @TODO Real error message
+        form_set_error('submit', 'Lost password NOK');
+      }
+    }
+    else {
+      form_set_error('submit', 'Une erreur innatendue est survenue, merci de réessayer ultérieurement. Nous vous prions de nous excuser pour le désagrément.');
+    }
+  }
+
+  return _visustock_forms_build_callback($form, $form_state, $commands);
 }
+
+//------------------------------------------------------------------------------
+// LOST PASSWORD FORM (step 1)
+//------------------------------------------------------------------------------
 
 /**
  * Form visustock_forms_lost_password_form callback.
@@ -58,14 +152,322 @@ function visustock_forms_signup_form() {
 function visustock_forms_lost_password_form() {
   $form = array();
 
+  $form['messages'] = array(
+    '#markup' => '<div id="visustock-forms-lost-password-form-messages"></div>',
+    '#type' => 'markup',
+  );
+
+  $form['company'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#title' => t('Entreprise'),
+    '#type' => 'textfield',
+  );
+  if (!empty($_COOKIE['Drupal_visitor_visustock_login_company'])) {
+    $form['company']['#default_value'] = $_COOKIE['Drupal_visitor_visustock_login_company'];
+  }
+
+  $form['username'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#title' => t('Nom d\'utilisateur'),
+    '#type' => 'textfield',
+  );
+  if (!empty($_COOKIE['Drupal_visitor_visustock_login_username'])) {
+    $form['username']['#default_value'] = $_COOKIE['Drupal_visitor_visustock_login_username'];
+  }
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Récupérer mon mot de passe'),
+    '#ajax' => array(
+      'callback' => 'visustock_forms_lost_password_callback',
+      'progress' => array(
+        'type' => 'throbber',
+        'message' => t('Please wait...'),
+      ),
+    ),
+  );
+
   return $form;
 }
 
 /**
- * Form visustock_forms_retreive_password_form callback.
+ * AjaX callback for the visustock_lost_password_form submission.
  */
-function visustock_forms_retreive_password_form() {
+function visustock_forms_lost_password_callback($form, $form_state) {
+  $commands = array();
+
+  $errors = form_get_errors();
+  if (empty($errors)) {
+    // @TODO Real URL
+    $url = variable_get(VISUSTOCK_FORMS_APP_URL_VARIABLE, VISUSTOCK_FORMS_APP_URL_DEFAULT);
+//    $url .= '/test';
+    $data = array(
+      'company' => $form_state['values']['company'],
+      'username' => $form_state['values']['username'],
+    );
+    $result = _visustock_forms_http_request($url, $data);
+    if (true||!empty($result)) {
+      // @TODO Real condition
+      if (true) {
+        drupal_set_message('Votre demande a bien été prise en compte. Vous recevrez un email contenant les instructions pour récupérer votre mot de passe dans quelques instants.', 'status');
+      }
+      else {
+        // @TODO Real error message
+        form_set_error('submit', 'Auth NOK');
+      }
+    }
+    else {
+      form_set_error('submit', 'Une erreur innatendue est survenue, merci de réessayer ultérieurement. Nous vous prions de nous excuser pour le désagrément.');
+    }
+  }
+
+  return _visustock_forms_build_callback($form, $form_state, $commands);
+}
+
+//------------------------------------------------------------------------------
+// RETRIEVE PASSWORD FORM (step 2)
+//------------------------------------------------------------------------------
+
+/**
+ * Form visustock_forms_retrieve_password_form callback.
+ */
+function visustock_forms_retrieve_password_form() {
   $form = array();
 
+  $form['messages'] = array(
+    '#markup' => '<div id="visustock-forms-retrieve-password-form-messages"></div>',
+    '#type' => 'markup',
+  );
+
+  $form['password'] = array(
+    '#required' => TRUE,
+    '#title' => t('Password'),
+    '#type' => 'password',
+  );
+
+  $form['password-confirmation'] = array(
+    '#required' => TRUE,
+  	'#rules' => array('match_field[password]'),
+    '#title' => t('Confirm password'),
+    '#type' => 'password',
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Retrieve my password'),
+    '#ajax' => array(
+      'callback' => 'visustock_forms_retrieve_password_callback',
+      'progress' => array(
+        'type' => 'throbber',
+        'message' => t('Please wait...'),
+      ),
+    ),
+  );
+
   return $form;
+}
+
+/**
+ * AjaX callback for the visustock_retrieve_password_form submission.
+ */
+function visustock_forms_retrieve_password_callback($form, $form_state) {
+  $commands = array();
+
+  $errors = form_get_errors();
+  if (empty($errors)) {
+    // @TODO external call and result
+    $commands[] = ajax_command_alert('Ajax OK');
+  }
+
+  return _visustock_forms_build_callback($form, $form_state, $commands);
+}
+
+//------------------------------------------------------------------------------
+// REGISTER FORM
+//------------------------------------------------------------------------------
+
+/**
+ * Form visustock_forms_register_form callback.
+ */
+function visustock_forms_register_form() {
+  $form = array();
+
+  $form['messages'] = array(
+    '#markup' => '<div id="visustock-forms-register-form-messages"></div>',
+    '#type' => 'markup',
+  );
+
+  $form['firstname'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#title' => t('First name'),
+    '#type' => 'textfield',
+  );
+  $form['lastname'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#title' => t('Last name'),
+    '#type' => 'textfield',
+  );
+  $form['mail'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#rules' => array('email'),
+    '#title' => t('E-mail'),
+    '#type' => 'textfield',
+  );
+  $form['phone'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#title' => t('Phone'),
+    '#type' => 'textfield',
+  );
+  $form['company'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#title' => t('Company'),
+    '#type' => 'textfield',
+  );
+  $form['activity'] = array(
+    '#filters' => array('trim'),
+    '#required' => FALSE,
+    '#title' => t('Secteur d\'activité'),
+    '#type' => 'textfield',
+  );
+  $form['address1'] = array(
+    '#filters' => array('trim'),
+    '#required' => FALSE,
+    '#title' => t('Address'),
+    '#type' => 'textfield',
+  );
+  $form['address2'] = array(
+    '#filters' => array('trim'),
+    '#required' => FALSE,
+    '#title' => t('Complément'),
+    '#type' => 'textfield',
+  );
+  $form['city'] = array(
+    '#filters' => array('trim'),
+    '#required' => FALSE,
+    '#title' => t('City'),
+    '#type' => 'textfield',
+  );
+  $form['area'] = array(
+    '#filters' => array('trim'),
+    '#required' => FALSE,
+    '#title' => t('Area'),
+    '#type' => 'textfield',
+  );
+  $form['zipcode'] = array(
+    '#filters' => array('trim'),
+    '#required' => FALSE,
+    '#title' => t('Zip code'),
+    '#type' => 'textfield',
+  );
+  $form['country'] = array(
+    '#filters' => array('trim'),
+    '#required' => FALSE,
+    '#title' => t('Country'),
+    '#type' => 'textfield',
+  );
+  $form['username'] = array(
+    '#filters' => array('trim'),
+    '#required' => TRUE,
+    '#title' => t('Username'),
+    '#type' => 'textfield',
+  );
+  $form['password'] = array(
+    '#required' => TRUE,
+    '#title' => t('Password'),
+    '#type' => 'password',
+  );
+  $form['password-confirmation'] = array(
+    '#required' => TRUE,
+  	'#rules' => array('match_field[password]'),
+    '#title' => t('Confirm password'),
+    '#type' => 'password',
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Register'),
+    '#ajax' => array(
+      'callback' => 'visustock_forms_register_callback',
+      'progress' => array(
+        'type' => 'throbber',
+        'message' => t('Please wait...'),
+      ),
+    ),
+  );
+
+  return $form;
+}
+
+/**
+ * AjaX callback for the visustock_register_form submission.
+ */
+function visustock_forms_register_callback($form, $form_state) {
+  $commands = array();
+
+  $errors = form_get_errors();
+  if (empty($errors)) {
+    // @TODO external call and result
+    $commands[] = ajax_command_alert('Ajax OK');
+  }
+
+  return _visustock_forms_build_callback($form, $form_state, $commands);
+}
+
+//------------------------------------------------------------------------------
+// HELPERS
+//------------------------------------------------------------------------------
+
+/**
+ * Generic callback
+ */
+function _visustock_forms_build_callback($form, $form_state, array $commands) {
+  $target_id = _visustock_forms_get_target_id($form, $form_state);
+
+  $commands[] = ajax_command_html('#' . $target_id . '-messages', theme('status_messages'), array('effect' => 'fade'));
+  $commands[] = ajax_command_changed('#' . $target_id . '-messages');
+
+  return array(
+    '#type' => 'ajax',
+    '#commands' => $commands,
+  );
+}
+
+/**
+ * Get target id from 
+ */
+function _visustock_forms_get_target_id($form, $form_state) {
+  $target_id = $form['#form_id'];
+  if (!empty($form_state['clicked_button']['#ajax']['wrapper'])) {
+    $target_id = $form_state['clicked_button']['#ajax']['wrapper'];
+  }
+
+  $target_id = strtr(drupal_strtolower($target_id), array(' ' => '-', '_' => '-', '[' => '-', ']' => ''));
+
+  return $target_id;
+}
+
+/**
+ * Launch a request to the application
+ */
+function _visustock_forms_http_request($url, array $data) {
+  $response = array();
+
+  $options = array(
+    'headers' => array(),
+    'method' => 'POST',
+    'data' => drupal_http_build_query($data),
+  );
+  $result = drupal_http_request($url, $options);
+  if ($result->code == 200) {
+    $response = drupal_json_decode($result->data);
+  }
+
+  return $response;
 }
