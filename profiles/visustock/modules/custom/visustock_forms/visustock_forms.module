@@ -12,22 +12,22 @@ define('VISUSTOCK_FORMS_APP_URL_DEFAULT', 'http://test.visustock.fr');
 function visustock_forms_menu() {
   $items = array();
 
-  $items['visustock/login'] = array(
+  $items['login'] = array(
     'title' => t('Log in'),
     'page callback' => '_visustock_forms_login',
     'access callback' => TRUE,
   );
-  $items['visustock/lost-password'] = array(
+  $items['lost-password'] = array(
     'title' => t('Lost password'),
     'page callback' => '_visustock_forms_pass',
     'access callback' => TRUE,
   );
-  $items['visustock/retrieve-password'] = array(
+  $items['retrieve-password'] = array(
     'title' => t('Lost password'),
     'page callback' => '_visustock_forms_pass2',
     'access callback' => TRUE,
   );
-  $items['visustock/register'] = array(
+  $items['register'] = array(
     'title' => t('Register'),
     'page callback' => '_visustock_forms_register',
     'access callback' => TRUE,
