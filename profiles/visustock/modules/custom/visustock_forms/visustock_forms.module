@@ -77,7 +77,7 @@ function _visustock_forms_pass() {
  */
 function _visustock_forms_pass2() {
   // Test key validity
-  $url = url(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/recoverPassStep2TestHash.php', array('query' => array('h' => $_GET['h'])));
+  $url = url(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/recoverPassStep2TestHash.php', array('external' => TRUE, 'query' => array('h' => $_GET['h'])));
   $result = drupal_http_request($url);
   if ($result->data == 0) {
     return array(
