@@ -43,6 +43,12 @@ function _visustock_forms_login() {
   $result = _visustock_forms_commons();
   drupal_add_css(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/resources/css/login.css', array('type' => 'external'));
   drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/login-all.js', 'external');
+
+  $result['lost'] = array(
+    '#markup' => '<p><a href="' . url('visustock/lost-password') . '" class="lost-password-link">Vous ne pouvez accéder à votre compte ?</a></p>',
+    '#weight' => 1,
+  );
+
   return $result;
 }
 
@@ -96,6 +102,9 @@ function _visustock_forms_commons() {
   drupal_add_css(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/extjs/resources/css/ext-all.css', array('type' => 'external'));
   drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/extjs/ext.js', 'external');
   return array(
-    '#markup' => '<div id="theForm"></div>',
+    'form' => array(
+      '#markup' => '<div id="theForm"></div>',
+      '#weight' => 0,
+    ),
   );
 }
