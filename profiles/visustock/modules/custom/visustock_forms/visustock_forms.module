@@ -81,7 +81,7 @@ function _visustock_forms_pass2() {
   $result = drupal_http_request($url);
   if ($result->data == 0) {
     return array(
-      '#markup' => '<p>Erreur:</p><p>Le lien fourni n\'est plus valide.</p><p>Si vous devez réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.</p><p><a href="' . url('visustock/lost-password') . '">>Réinitialiser votre mot de passe</a></p>',
+      '#markup' => '<p>Erreur:</p><p>Le lien fourni n\'est plus valide.</p><p>Si vous devez réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.</p><p><a href="' . url('lost-password') . '">>Réinitialiser votre mot de passe</a></p>',
     );
   }
 
