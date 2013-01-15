@@ -54,7 +54,7 @@ function _visustock_forms_login() {
   drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/login-all.js', 'external');
 
   $result['lost'] = array(
-    '#markup' => '<p><a href="' . url('visustock/lost-password') . '" class="lost-password-link">Vous ne pouvez accéder à votre compte ?</a></p>',
+    '#markup' => '<p><a href="' . url('lost-password') . '" class="lost-password-link">Vous ne pouvez accéder à votre compte ?</a></p>',
     '#weight' => 1,
   );
 
