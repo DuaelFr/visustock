@@ -5,6 +5,7 @@
  */
 
 define('VISUSTOCK_FORMS_APP_URL_DEFAULT', 'http://test.visustock.fr');
+define('VISUSTOCK_FORMS_APP_URL_LOGGED', VISUSTOCK_FORMS_APP_URL_DEFAULT . '/index.php');
 
 /**
  * Implements hook_menu().
@@ -40,6 +41,14 @@ function visustock_forms_menu() {
  * Page visustock/login callback
  */
 function _visustock_forms_login() {
+  // Test if user is already logged in
+  $url = url(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/loginTest.php', array('external' => TRUE));
+  $result = drupal_http_request($url);
+  if ($result->data == 1) {
+    $url = url(VISUSTOCK_FORMS_APP_URL_LOGGED, array('external' => TRUE));
+    drupal_goto($url);
+  }
+
   $result = _visustock_forms_commons();
   drupal_add_css(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/resources/css/login.css', array('type' => 'external'));
   drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/login-all.js', 'external');
