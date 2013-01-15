@@ -3,4 +3,4 @@ description = Custom Forms to interface with the VisuStock application
 core = 7.x
 version = 7.x-1.0
 
-dependendies[] = fapi_validation
+dependencies[] = fapi_validation
