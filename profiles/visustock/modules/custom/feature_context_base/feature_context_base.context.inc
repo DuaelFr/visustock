@@ -116,12 +116,6 @@ function feature_context_base_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'feature_context_base-visustock-spacer' => array(
-          'module' => 'feature_context_base',
-          'delta' => 'visustock-spacer',
-          'region' => 'sidebar_first',
-          'weight' => '1',
-        ),
         'menu_block-visustock-second-level' => array(
           'module' => 'menu_block',
           'delta' => 'visustock-second-level',
