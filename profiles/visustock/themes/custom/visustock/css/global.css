@@ -461,3 +461,11 @@ input[type="submit"]:hover,
 .block-system-main table tbody tr:hover td {
   background: #d0dafd;
 }
+
+/*******************************************************************************
+ * OVERRIDES EXTJS
+ ******************************************************************************/
+
+#theForm {}
+#theForm ul, .x-layer ul { padding: 0; margin: 0; }
+#theForm td { vertical-align: bottom; }
