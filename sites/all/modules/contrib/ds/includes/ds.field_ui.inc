@@ -575,7 +575,7 @@ function ds_field_ui_layouts_save($form, &$form_state) {
     $record->settings['wrappers'] = array();
     $record->settings['layout_wrapper'] = 'div';
     $record->settings['layout_attributes'] = '';
-    $record->settings['layout_attributes_merge'] = variable_get('ds_layout_attributes_merge', TRUE);
+    $record->settings['layout_attributes_merge'] = FALSE;
     $fields = _ds_sort_fields($form_state['values']['fields'], 'weight');
     foreach ($fields as $field_key => $field) {
 
@@ -936,7 +936,7 @@ function ds_field_formatter_settings_summary($field, $instance, $view_mode) {
  * @return $summary
  *   An markup array.
  */
-function ds_field_settings_summary($field, $form_state, $form, $view_mode) {
+function ds_field_settings_summary($field, $form_state) {
 
   $summary = '';
 
@@ -958,23 +958,6 @@ function ds_field_settings_summary($field, $form_state, $form, $view_mode) {
     }
   }
 
-  if (!empty($form_state['complete form'])) {
-    $formatter_name = $form_state['complete form']['fields'][$field['name']]['format']['type']['#value'];
-  }
-  else {
-    $formatter_name = $form['fields'][$field['name']]['format']['type']['#default_value'];
-  }
-
-  // Allow other modules to alter the formatter summary.
-  $context = array(
-    'formatter' => $formatter_name,
-    'field' => $field,
-    'instance' => array('display' => array('default' => array('settings' => array()))),
-    'view_mode' => $view_mode,
-    'ds' => TRUE,
-  );
-  drupal_alter('field_formatter_settings_summary', $summary, $context);
-
   if (empty($summary)) {
     return NULL; // no summary return nothing
   }
@@ -994,7 +977,7 @@ function ds_field_settings_summary($field, $form_state, $form, $view_mode) {
  * @return $form
  *   A form definition.
  */
-function ds_field_settings_form($field, &$form_state, $entity_form, $view_mode) {
+function ds_field_settings_form($field, &$form_state) {
   $form = module_invoke($field['module'], 'ds_field_settings_form', $field);
 
   // Add field template settings to every field if enabled.
@@ -1019,29 +1002,6 @@ function ds_field_settings_form($field, &$form_state, $entity_form, $view_mode) 
       $form['#markup'] = t('This field does not support Field templates.');
     }
   }
-
-  $formatter_name = $form_state['complete form']['fields'][$field['name']]['format']['type']['#value'];
-
-  // Allow other modules to alter the formatter settings form.
-  $context = array(
-    'ds' => TRUE,
-    'formatter' => $formatter_name,
-    'field' => $field,
-    'instance' => array(
-      'label' => $field['title'],
-      'bundle' => $field['bundle'],
-      'entity_type' => $field['entity_type'],
-      'display' => array(
-        'default' => array(
-          'settings' => array()
-        ),
-      ),
-    ),
-    'view_mode' => $view_mode,
-    'form' => $entity_form,
-    'form_state' => $form_state,
-  );
-  drupal_alter('field_formatter_settings_form', $form, $context);
 
   return $form;
 }
@@ -1080,11 +1040,7 @@ function ds_ds_field_format_summary($field) {
 function ds_ds_field_settings_form($field) {
   $form = array();
 
-  $settings = !empty($field['formatter_settings']['settings']) ? $field['formatter_settings']['settings'] : (!empty($field['properties']['default']) ? $field['properties']['default'] : array());
-
-  if (empty($field['properties']['settings'])) {
-    return $form;
-  }
+  $settings = isset($field['formatter_settings']) ? $field['formatter_settings'] : $field['properties']['default'];
 
   foreach ($field['properties']['settings'] as $key => $value) {
 
@@ -1498,11 +1454,12 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, &$form, $
       '#default_value' => isset($layout->settings['layout_attributes']) ? $layout->settings['layout_attributes'] : '',
       '#weight' => 11,
     );
+
     $form['additional_settings']['region_wrapper']['layout_attributes_merge'] = array(
       '#type' => 'checkbox',
       '#title' => t('Merge other layout attributes'),
       '#description' => 'Certain modules might provide additional attributes for the template wrapper, e.g. RDFa. Disable this option if you prefer to specify these attributes above.',
-      '#default_value' => isset($layout->settings['layout_attributes_merge']) ? $layout->settings['layout_attributes_merge'] : variable_get('ds_layout_attributes_merge', TRUE),
+      '#default_value' => isset($layout->settings['layout_attributes_merge']) ? $layout->settings['layout_attributes_merge'] : FALSE,
       '#weight' => 12,
     );
 
@@ -1915,13 +1872,13 @@ function _ds_field_ui_fields($entity_type, $bundle, $view_mode, &$form, &$form_s
 
     if ($form_state['formatter_settings_edit'] == $key) {
       $table[$key]['settings_summary']['#attributes']['colspan'] = 2;
-      $settings_form = ds_field_settings_form($field, $form_state, $form, $view_mode);
+      $settings_form = ds_field_settings_form($field, $form_state);
       ds_field_row_form_format_construct($table, $key, $settings_form);
     }
     else {
       // After saving, the settings are updated here as well. First we create
       // the element for the table cell.
-      $summary = ds_field_settings_summary($field, $form_state, $form, $view_mode);
+      $summary = ds_field_settings_summary($field, $form_state);
 
       if (isset($summary)) {
         $table[$key]['settings_summary'] = $summary;
@@ -2099,8 +2056,6 @@ function _ds_field_ui_core_fields($entity_type, $bundle, $view_mode, &$form, &$f
 
       // Allow other modules to alter the formatter summary.
       $context = array(
-        'module' => $formatter['module'],
-        'formatter' => $formatter,
         'field' => $field,
         'instance' => $instance,
         'view_mode' => $view_mode,
