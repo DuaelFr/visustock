@@ -468,4 +468,5 @@ input[type="submit"]:hover,
 
 #theForm {}
 #theForm ul, .x-layer ul { padding: 0; margin: 0; }
-#theForm td { vertical-align: bottom; }
+#theForm table { padding: 0; margin: 0; }
+#theForm td { vertical-align: bottom; border: none; background: none; }
