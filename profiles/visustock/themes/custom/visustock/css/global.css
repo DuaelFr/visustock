@@ -437,3 +437,27 @@ input[type="submit"]:hover,
 }
 .block-system-main ul li { padding-top: 0.7em; }
 .block-system-main ul ul { list-style-image: url(../images/puce.jpg); }
+
+.block-system-main table {
+  margin: 1em 0;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  border-radius: 0 0 5px 5px;
+}
+.block-system-main table th {
+  padding: 8px;
+  font-weight: normal;
+  font-size: 13px;
+  color: #0243AB;
+  background: #b9c9fe;
+}
+.block-system-main table td {
+  padding: 8px;
+  background: #e8edff;
+  border-top: 1px solid #cccccc;
+  color: #669;
+}
+.block-system-main table tbody tr:hover td {
+  background: #d0dafd;
+}
