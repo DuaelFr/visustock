@@ -448,8 +448,8 @@ system/ajax/*';
       'omega-branding.css' => 'omega-branding.css',
       'omega-menu.css' => 'omega-menu.css',
       'omega-forms.css' => 'omega-forms.css',
-      'omega-visuals.css' => 'omega-visuals.css',
       'global.css' => 'global.css',
+      'omega-visuals.css' => 0,
     ),
     'alpha_exclude' => array(
       'modules/field/theme/field.css' => 0,
@@ -689,7 +689,7 @@ system/ajax/*';
     'alpha_zone_content_css' => '',
     'alpha_zone_content_wrapper_css' => '',
     'alpha_zone_content_equal_height_container' => 0,
-    'alpha_region_sidebar_first_force' => 0,
+    'alpha_region_sidebar_first_force' => 1,
     'alpha_region_sidebar_first_zone' => 'content',
     'alpha_region_sidebar_first_prefix' => '0',
     'alpha_region_sidebar_first_columns' => '5',
