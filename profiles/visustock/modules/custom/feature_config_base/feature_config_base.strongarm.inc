@@ -408,8 +408,8 @@ system/ajax/*';
     'default_logo' => 1,
     'logo_path' => '',
     'logo_upload' => '',
-    'default_favicon' => 1,
-    'favicon_path' => '',
+    'default_favicon' => 0,
+    'favicon_path' => 'profiles/visustock/themes/custom/visustock/favicon.ico',
     'favicon_upload' => '',
     'alpha_grid' => 'alpha_default',
     'alpha_responsive' => 0,
@@ -759,6 +759,7 @@ system/ajax/*';
     'alpha_region_footer_first_css' => '',
     'alpha_region_footer_first_equal_height_element' => 0,
     'alpha_region_footer_first_equal_height_container' => 0,
+    'favicon_mimetype' => 'image/vnd.microsoft.icon',
   );
   $export['theme_visustock_settings'] = $strongarm;
 
