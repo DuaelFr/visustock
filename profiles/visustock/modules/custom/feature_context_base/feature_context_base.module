@@ -108,7 +108,8 @@ function _feature_context_header_title() {
       $attr['class'] = 'title';
       $attr['id'] = 'page-title';
       // Clear the title to avoid duplicated h1 in the page
-      drupal_set_title('');      
+      $theme = alpha_get_theme();
+      $theme->settings['toggle']['page_title'] = 0;
     }
   }
   // If a router item exists, use it
@@ -118,7 +119,7 @@ function _feature_context_header_title() {
     }
     else {
       $result = call_user_func_array($item['title_callback'], $title_callback_args);
-    }      
+    }
   }
   // If no router item exists, just keep the title
   else {
