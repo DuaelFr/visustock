@@ -14,22 +14,22 @@ function visustock_forms_menu() {
   $items = array();
 
   $items['login'] = array(
-    'title' => t('Log in'),
+    'title' => t('Connexion'),
     'page callback' => '_visustock_forms_login',
     'access callback' => TRUE,
   );
   $items['lost-password'] = array(
-    'title' => t('Lost password'),
+    'title' => t('Récupération de compte'),
     'page callback' => '_visustock_forms_pass',
     'access callback' => TRUE,
   );
   $items['retrieve-password'] = array(
-    'title' => t('Lost password'),
+    'title' => t('Récupération de compte'),
     'page callback' => '_visustock_forms_pass2',
     'access callback' => TRUE,
   );
   $items['register'] = array(
-    'title' => t('Register'),
+    'title' => t('Demande de compte démo'),
     'page callback' => '_visustock_forms_register',
     'access callback' => TRUE,
   );
