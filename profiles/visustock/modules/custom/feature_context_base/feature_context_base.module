@@ -108,8 +108,10 @@ function _feature_context_header_title() {
       $attr['class'] = 'title';
       $attr['id'] = 'page-title';
       // Clear the title to avoid duplicated h1 in the page
-      $theme = alpha_get_theme();
-      $theme->settings['toggle']['page_title'] = 0;
+      if (function_exists('alpha_get_theme')) {
+        $theme = alpha_get_theme();
+        $theme->settings['toggle']['page_title'] = 0;
+      }
     }
   }
   // If a router item exists, use it
