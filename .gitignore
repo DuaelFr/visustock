@@ -5,6 +5,9 @@ sites/*/settings*.php
 sites/*/files
 sites/*/private
 
+# Ignore TMP files
+tmp/*
+
 # Ignore IDE files
 .buildpath
 .project
