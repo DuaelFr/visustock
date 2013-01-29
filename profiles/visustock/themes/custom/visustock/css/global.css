@@ -3,7 +3,7 @@
  ******************************************************************************/
 body {
     background: #f2f2f2;
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 300;
     color: #333333;
     font-size: 14px;
@@ -46,14 +46,14 @@ body {
 /* Left sidebar */
 /*--------------*/
 .region-sidebar-first {
-    background: url(../images/bg_lmenu.jpg) no-repeat top left;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
     min-height: 150px;
 }
 
 /* Main content */
 /*--------------*/
+.front .zone-content {
+    display: none;
+}
 .region-content {}
 
 /* Footer */
@@ -108,7 +108,7 @@ body {
 
 /* Header title block */
 /*--------------------*/
-.block-visustock-header-title .content h1.title, 
+.block-visustock-header-title .content h1.title,
 .block-visustock-header-title .content h2 {
     padding-left: 50px;
     font-weight: normal;
@@ -120,7 +120,12 @@ body {
 
 /* Left menu block */
 /*-----------------*/
-.block-visustock-second-level {}
+.block-visustock-second-level {
+    background: url(../images/bg_lmenu.jpg) no-repeat top left;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    min-height: 150px;
+}
 .block-visustock-second-level .content ul {
     list-style-type: none;
     padding: 10px 0;
@@ -133,24 +138,24 @@ body {
     padding: 0 16px;
 }
 .block-visustock-second-level .content ul li a {
-    color: #3399ff; 
-    text-decoration: none; 
+    color: #3399ff;
+    text-decoration: none;
     display: block;
     padding: 7px 0;
-    font-size: 14px; 
+    font-size: 14px;
     font-weight: bold;
     background: url(../images/border_li.gif) no-repeat bottom left;
 }
 .block-visustock-second-level .content ul li.last a { background: none; }
 
-.block-visustock-second-level .content ul li.active, 
-.block-visustock-second-level .content ul li.active-trail, 
+.block-visustock-second-level .content ul li.active,
+.block-visustock-second-level .content ul li.active-trail,
 .block-visustock-second-level .content ul li:hover {
     background: url(../images/lmenu_current.png) no-repeat top left;
 }
-.block-visustock-second-level .content ul li.active a, 
-.block-visustock-second-level .content ul li.active-trail a, 
-.block-visustock-second-level .content ul li:hover a { 
+.block-visustock-second-level .content ul li.active a,
+.block-visustock-second-level .content ul li.active-trail a,
+.block-visustock-second-level .content ul li:hover a {
     color: #fff;
     background: none;
 }
@@ -163,19 +168,19 @@ body {
     padding: 0 16px;
 }
 .block-visustock-back-news .content a {
-    color: #3399ff; 
-    text-decoration: none; 
+    color: #3399ff;
+    text-decoration: none;
     display: block;
     padding: 7px 0;
-    font-size: 14px; 
+    font-size: 14px;
     font-weight: bold;
     background: url(../images/border_li.gif) no-repeat bottom left;
 }
 .block-visustock-back-news .content:hover {
     background: url(../images/lmenu_current.png) no-repeat top left;
 }
-.block-visustock-back-news .content:hover a  { 
-    color: #fff; 
+.block-visustock-back-news .content:hover a  {
+    color: #fff;
     background: none;
 }
 
@@ -194,7 +199,7 @@ body {
     position: absolute;
     top: 150px;
     right: 20px;
-    z-index: 2; 
+    z-index: 2;
     height: 43px;
     width: 180px;
     display: block;
@@ -208,7 +213,7 @@ body {
     background: url(../images/bg_devis_hover.jpg) repeat-x bottom left;
     border: 1px solid #666666;
 }
-.block-bean-visustock-home-header .field-name-field-button  a {    
+.block-bean-visustock-home-header .field-name-field-button  a {
     font-size: 13px;
     font-weight: bold;
     color: #fff;
@@ -220,7 +225,7 @@ body {
 .block-bean-visustock-home-header .field-name-field-image {
     margin-left: -10px;
 }
-.block-bean-visustock-home-header .field-name-field-image img {    
+.block-bean-visustock-home-header .field-name-field-image img {
     -webkit-border-radius: 0px 0px 5px 5px;
     border-radius: 0px 0px 5px 5px;
 }
@@ -236,7 +241,7 @@ body {
     font-weight: normal;
     font-size: 24px;
     line-height: 30px;
-    border-bottom: 1px solid #cccccc; 
+    border-bottom: 1px solid #cccccc;
     padding: 10px 0;
     margin-bottom: 20px;
 }
@@ -266,7 +271,7 @@ body {
     font-weight: normal;
     font-size: 24px;
     line-height: 30px;
-    border-bottom: 1px solid #cccccc; 
+    border-bottom: 1px solid #cccccc;
     padding: 10px 0;
     margin-bottom: 20px;
 }
@@ -287,8 +292,8 @@ body {
 /* News list */
 .view-id-news.view-display-id-list_page {}
 .view-id-news.view-display-id-list_page .views-row {
-    background: url(../images/puce_actu.jpg) no-repeat 0 5px; 
-    padding: 0 0 20px 20px; 
+    background: url(../images/puce_actu.jpg) no-repeat 0 5px;
+    padding: 0 0 20px 20px;
     margin: 0;
 }
 .view-id-news.view-display-id-list_page .views-row h2 { margin: 0; }
@@ -306,7 +311,7 @@ body {
 /* News */
 /*------*/
 .node-news {}
-.node-news .field-name-field-image { 
+.node-news .field-name-field-image {
     float: left;
     margin: 0 10px 10px 0;
 }
@@ -350,12 +355,12 @@ body {
  ******************************************************************************/
 
 h1, h2, h3, h4, h5, h6 {
-   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 a:link, a:visited {
     text-decoration: none;
 }
-a.button {    
+a.button {
     display: inline-block;
     padding:3px 15px;
     background: url(../images/btn_off.jpg) repeat-x top left;
@@ -393,7 +398,7 @@ input[type="submit"],
     text-shadow: none;
 }
 input[type="submit"]:hover,
-.form-submit:hover {     
+.form-submit:hover {
     background: url(../images/btn_on.jpg) repeat-x bottom left;
     border: 1px solid #666666;
 }
