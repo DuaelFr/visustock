@@ -296,7 +296,10 @@ body {
     padding: 0 0 20px 20px;
     margin: 0;
 }
-.view-id-news.view-display-id-list_page .views-row h2 { margin: 0; }
+.view-id-news.view-display-id-list_page .views-row h2 {
+    margin: 0;
+    padding: 0;
+}
 .view-id-news.view-display-id-list_page .views-row h2 a {
     color: #3399ff;
     font-size: 18px;
