@@ -81,6 +81,11 @@ function feature_context_base_block_view($delta = '') {
  * Header title block content callback.
  */
 function _feature_context_header_title() {
+  global $theme_key;
+  if ($theme_key == variable_get('admin_theme', '')) {
+    return '';
+  }
+
   $result = '';
   $wrapper = &drupal_static('feature_context_header_title_wrapper', 'h2');
   $attr = array();
