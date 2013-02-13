@@ -162,7 +162,13 @@ body {
 
 /* News back block */
 /*-----------------*/
-.block-visustock-back-news { padding-top: 10px; }
+.block-visustock-back-news {
+  background: url(../images/bg_lmenu.jpg) no-repeat top left;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  min-height: 150px;
+  padding-top: 10px;
+}
 .block-visustock-back-news .content {
     display: block;
     padding: 0 16px;
