@@ -259,13 +259,6 @@ function feature_config_base_user_default_permissions() {
     'module' => 'menu_admin_per_menu',
   );
 
-  // Exported permission: administer meta tags.
-  $permissions['administer meta tags'] = array(
-    'name' => 'administer meta tags',
-    'roles' => array(),
-    'module' => 'metatag',
-  );
-
   // Exported permission: administer module filter.
   $permissions['administer module filter'] = array(
     'name' => 'administer module filter',
@@ -292,13 +285,6 @@ function feature_config_base_user_default_permissions() {
     'name' => 'administer nodes',
     'roles' => array(),
     'module' => 'node',
-  );
-
-  // Exported permission: administer pathauto.
-  $permissions['administer pathauto'] = array(
-    'name' => 'administer pathauto',
-    'roles' => array(),
-    'module' => 'pathauto',
   );
 
   // Exported permission: administer permissions.
@@ -515,16 +501,6 @@ function feature_config_base_user_default_permissions() {
     'module' => 'bean',
   );
 
-  // Exported permission: edit meta tags.
-  $permissions['edit meta tags'] = array(
-    'name' => 'edit meta tags',
-    'roles' => array(
-      'Administrateur' => 'Administrateur',
-      'Rédacteur' => 'Rédacteur',
-    ),
-    'module' => 'metatag',
-  );
-
   // Exported permission: execute php code.
   $permissions['execute php code'] = array(
     'name' => 'execute php code',
@@ -546,13 +522,6 @@ function feature_config_base_user_default_permissions() {
     'name' => 'manage features',
     'roles' => array(),
     'module' => 'features',
-  );
-
-  // Exported permission: notify of path changes.
-  $permissions['notify of path changes'] = array(
-    'name' => 'notify of path changes',
-    'roles' => array(),
-    'module' => 'pathauto',
   );
 
   // Exported permission: revert revisions.
