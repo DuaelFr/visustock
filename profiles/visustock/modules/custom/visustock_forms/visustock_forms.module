@@ -4,7 +4,7 @@
  * Code for the VisuStock Forms module.
  */
 
-define('VISUSTOCK_FORMS_APP_URL_DEFAULT', 'http://test.visustock.fr');
+define('VISUSTOCK_FORMS_APP_URL_DEFAULT', 'http://test.visustock.fr/app');
 define('VISUSTOCK_FORMS_APP_URL_LOGGED', VISUSTOCK_FORMS_APP_URL_DEFAULT . '/index.php');
 
 /**
