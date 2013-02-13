@@ -470,3 +470,33 @@ input[type="submit"]:hover,
 #theForm ul, .x-layer ul { padding: 0; margin: 0; }
 #theForm table { padding: 0; margin: 0; }
 #theForm td { vertical-align: bottom; border: none; background: none; }
+
+
+/*******************************************************************************
+ * FOOTER AT BOTTOM
+ ******************************************************************************/
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+#page {
+  min-height:100%;
+  position:relative;
+}
+#section-content {
+  padding-bottom: 80px;   /* Height of the footer */
+}
+#section-footer {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:40px;   /* Height of the footer */
+  margin: 0;
+  padding: 20px 0 0 0;
+}
+#admin-menu {
+  margin: 0;
+  padding: 0;
+}
