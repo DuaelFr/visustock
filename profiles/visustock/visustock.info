@@ -34,6 +34,7 @@ dependencies[] = feature_config_base
 dependencies[] = feature_config_editors
 dependencies[] = feature_config_locale
 dependencies[] = feature_context_base
+dependencies[] = feature_forms
 dependencies[] = feature_news
 dependencies[] = feature_pages
 
