@@ -13,8 +13,15 @@ function feature_config_base_user_default_roles() {
   // Exported role: Administrateur.
   $roles['Administrateur'] = array(
     'name' => 'Administrateur',
+    'weight' => '3',
+    'machine_name' => 'administrator',
+  );
+
+  // Exported role: Rédacteur.
+  $roles['Rédacteur'] = array(
+    'name' => 'Rédacteur',
     'weight' => '2',
-    'machine_name' => 'administrateur',
+    'machine_name' => 'writer',
   );
 
   return $roles;
