@@ -53,7 +53,7 @@ function feature_forms_uuid_features_default_content() {
       1 => array(
         'nid' => '12',
         'eid' => '1',
-        'email' => 'visustock@duael.fr',
+        'email' => 'info@visustock.fr',
         'subject' => 'Contact depuis le site Internet',
         'from_name' => 'default',
         'from_address' => 'default',
