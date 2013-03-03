@@ -9,6 +9,9 @@ body {
     font-size: 14px;
     line-height: 20px;
 }
+p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
+  margin-bottom: 15px;
+}
 #page {
     background: #fff url(../images/bg_body.jpg) repeat-x top left;
 }
@@ -442,10 +445,15 @@ input[type="submit"]:hover,
     list-style-type: none ;
     list-style-image: url(../images/puce_lvl1.jpg);
     padding-left: 2.2em;
-    padding-top: 0.7em;
+    padding-bottom: 0.7em;
 }
-.block-system-main ul li { padding-top: 0.7em; }
-.block-system-main ul ul { list-style-image: url(../images/puce.jpg); }
+.block-system-main ol {
+  padding-left: 2.2em;
+  padding-bottom: 0.7em;
+}
+.block-system-main ul li, .block-system-main ol li { padding-bottom: 0.7em; }
+.block-system-main li ul { list-style-image: url(../images/puce.jpg); padding-bottom: 0; margin-bottom: 0; }
+.block-system-main li ol { padding-bottom: 0; margin-bottom: 0; }
 
 .block-system-main table {
   margin: 1em 0;

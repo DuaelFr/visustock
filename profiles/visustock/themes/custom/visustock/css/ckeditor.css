@@ -1,0 +1,115 @@
+body {
+  background: #f2f2f2;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  color: #333333;
+  font-size: 14px;
+  line-height: 20px;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  font: inherit;
+  font-weight: bold;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
+  margin-bottom: 15px;
+}
+a:link, a:visited {
+  text-decoration: none;
+  color: #3399ff;
+}
+a:hover {
+  color: #ff6600;
+}
+a.button {
+  display: inline-block;
+  padding:3px 15px;
+  background: url(../images/btn_off.jpg) repeat-x top left;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  color: #fff;
+  border: 1px solid #ff9933;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+}
+a.button:hover {
+  background: url(../images/btn_on.jpg) repeat-x bottom left;
+  border: 1px solid #666666;
+}
+
+h2 {
+  color: #3399ff;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 30px;
+  border-bottom: 1px solid #cccccc;
+  padding: 10px 0;
+}
+h3 {
+  font-size: 20px;
+  line-height: 26px;
+  color: #0243AB;
+}
+
+ul {
+  list-style-type: none;
+  list-style-image: url(../images/puce_lvl1.jpg);
+  padding-left: 2.2em;
+  padding-bottom: 0.7em;
+}
+ol {
+  padding-left: 2.2em;
+  padding-bottom: 0.7em;
+}
+li {
+  padding-bottom: 0.7em;
+}
+li ul {
+  list-style-image: url(../images/puce.jpg);
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+li ol {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+table, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  font: inherit;
+}
+table {
+  margin: 1em 0;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  border-radius: 0 0 5px 5px;
+}
+th {
+  padding: 8px;
+  font-weight: normal;
+  font-size: 13px;
+  color: #0243AB;
+  background: #b9c9fe;
+}
+td {
+  padding: 8px;
+  background: #e8edff;
+  border-top: 1px solid #cccccc;
+  color: #669;
+}
+tr:hover td {
+  background: #d0dafd;
+}

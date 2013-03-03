@@ -26,9 +26,6 @@ function feature_config_editors_wysiwyg_default_profiles() {
           'Italic' => 1,
           'Underline' => 1,
         ),
-        'Linkit' => array(
-          'Linkit' => 1,
-        ),
       ),
       'toolbar_loc' => 'top',
       'toolbar_align' => 'left',
@@ -41,8 +38,8 @@ function feature_config_editors_wysiwyg_default_profiles() {
       'apply_source_formatting' => 0,
       'paste_auto_cleanup_on_paste' => 1,
       'block_formats' => 'p,address,pre,h2,h3,h4,h5,h6,div',
-      'css_setting' => 'theme',
-      'css_path' => '',
+      'css_setting' => 'self',
+      'css_path' => '/profiles/visustock/themes/custom/visustock/css/ckeditor.css',
       'css_classes' => '',
     ),
   );
@@ -91,9 +88,6 @@ function feature_config_editors_wysiwyg_default_profiles() {
         'imce' => array(
           'imce' => 1,
         ),
-        'Linkit' => array(
-          'Linkit' => 1,
-        ),
         'drupal' => array(
           'break' => 1,
         ),
@@ -109,8 +103,8 @@ function feature_config_editors_wysiwyg_default_profiles() {
       'apply_source_formatting' => 0,
       'paste_auto_cleanup_on_paste' => 1,
       'block_formats' => 'p,address,pre,h2,h3,h4,h5,h6,div',
-      'css_setting' => 'theme',
-      'css_path' => '',
+      'css_setting' => 'self',
+      'css_path' => '/profiles/visustock/themes/custom/visustock/css/ckeditor.css',
       'css_classes' => '',
     ),
   );
