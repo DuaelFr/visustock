@@ -62,7 +62,7 @@ function _visustock_forms_pass() {
   $key = variable_get('css_js_query_string', time());
   drupal_add_css(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/resources/css/visustock.css?' . $key, array('type' => 'external'));
   drupal_add_css(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/resources/css/login.css?' . $key, array('type' => 'external'));
-  drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/recoverPassStep1-all.js?' . $key, 'external');
+  drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/lost-password-all.js?' . $key, 'external');
   return $result;
 }
 
@@ -84,7 +84,7 @@ function _visustock_forms_pass2() {
   $key = variable_get('css_js_query_string', time());
   drupal_add_css(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/resources/css/visustock.css?' . $key, array('type' => 'external'));
   drupal_add_css(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/resources/css/login.css?' . $key, array('type' => 'external'));
-  drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/recoverPassStep2-all.js?' . $key, 'external');
+  drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/retrieve-password-all.js?' . $key, 'external');
   drupal_add_js(array('visustock' => array('h' => $_GET['h'])), 'setting');
   return $result;
 }
@@ -97,7 +97,7 @@ function _visustock_forms_register() {
   $key = variable_get('css_js_query_string', time());
   drupal_add_css(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/resources/css/visustock.css?' . $key, array('type' => 'external'));
   drupal_add_css(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/resources/css/login.css?' . $key, array('type' => 'external'));
-  drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/demoActReq-all.js?' . $key, 'external');
+  drupal_add_js(VISUSTOCK_FORMS_APP_URL_DEFAULT . '/register-all.js?' . $key, 'external');
   return $result;
 }
 
