@@ -4,7 +4,11 @@
  * Code for the VisuStock Forms module.
  */
 
-define('VISUSTOCK_FORMS_APP_URL_DEFAULT', 'http://test.visustock.fr/app');
+$protocol = 'http';
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+  $protocol = 'https';
+}
+define('VISUSTOCK_FORMS_APP_URL_DEFAULT', $protocol . '://' . $_SERVER['SERVER_NAME'] .'/app');
 define('VISUSTOCK_FORMS_APP_URL_LOGGED', VISUSTOCK_FORMS_APP_URL_DEFAULT . '/index.php');
 
 /**
