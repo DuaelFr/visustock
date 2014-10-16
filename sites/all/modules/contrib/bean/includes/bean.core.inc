@@ -57,7 +57,8 @@ interface BeanTypePluginInterface {
    *
    * @abstract
    *
-   * @return description of the type
+   * @return
+   *  description of the type
    */
   public function getDescription();
 
@@ -92,7 +93,8 @@ interface BeanTypePluginInterface {
    * @param $bean
    * @param $form
    * @param $form_state
-   * @return form array
+   * @return array
+   *  form array
    */
   public function form($bean, $form, &$form_state);
 
@@ -120,13 +122,16 @@ interface BeanTypePluginInterface {
    *
    * @abstract
    *
-   * @param $bean
+   * @param        $bean
    *   The bean object being viewed.
-   * @param $content
+   * @param        $content
    *   The default content array created by Entity API.  This will include any
    *   fields attached to the entity.
-   * @param $view_mode
+   * @param string $view_mode
    *   The view mode passed into $entity->view().
+   *
+   * @param null   $langcode
+   *
    * @return
    *   Return a renderable content array.
    */
@@ -159,6 +164,8 @@ class Bean extends Entity {
    *
    * @param $key
    *  The plugin key to get the info for.
+   *
+   * @return array|null
    */
   public function getInfo($key = NULL) {
     if ($this->plugin instanceof BeanTypePluginInterface) {
@@ -238,7 +245,30 @@ class Bean extends Entity {
    * 'entity_class_uri' as 'uri callback' hook_entity_info().
    */
   protected function defaultUri() {
-    return array('path' => 'block/' . $this->identifier());
+    return array('path' => 'block/' . strtolower($this->identifier()));
+  }
+
+  /**
+  * Get the default label
+  *
+  * @return string
+  */
+  protected function defaultLabel() {
+    if (empty($this->title)) {
+      return $this->label;
+    }
+
+    return $this->title;
+  }
+
+  /**
+   * Set the revision as default
+   *
+   * @return Bean
+   */
+  public function setDefault() {
+    $this->default_revision = TRUE;
+    return $this;
   }
 
   /**
@@ -339,7 +369,11 @@ class Bean extends Entity {
     $this->plugin->submit($this);
 
     $return = parent::save();
-    bean_reset();
+    bean_reset(TRUE, TRUE);
+
+    if (module_exists('block')) {
+      bean_cache_clear_block($this);
+    }
 
     return $return;
   }
@@ -364,10 +398,15 @@ class Bean extends Entity {
 
       // Base it on the label and make sure it isn't too long for the database.
       if (module_exists('transliteration')) {
-        $delta = drupal_clean_css_identifier(transliteration_get($this->label));
+        $delta = drupal_clean_css_identifier(strtolower(transliteration_get($this->label)));
       }
       else {
         $delta = drupal_clean_css_identifier(strtolower($this->label));;
+      }
+
+      // Add 'bean-' prefix when it's need to avoid a purely numeric delta.
+      if (is_numeric($delta)) {
+        $delta = 'bean-' . $delta;
       }
 
       $this->delta = substr($delta, 0, $max_length);
@@ -398,19 +437,6 @@ class Bean extends Entity {
 
     return $this;
   }
-
-  /**
-   * Returns the label of the entity.
-   *
-   * Modules may alter the label by specifying another 'label callback' using
-   * hook_entity_info_alter().
-   *
-   * @see entity_label()
-   */
-  public function label() {
-    return check_plain($this->defaultLabel());
-  }
-
 }
 
 class BeanEntityAPIController extends EntityAPIControllerExportable {
@@ -445,20 +471,22 @@ class BeanEntityAPIController extends EntityAPIControllerExportable {
     if (!empty($deltas)) {
       try {
         // @see block_custom_block_delete_submit()
-        db_delete('block')
-          ->condition('module', 'bean')
-          ->condition('delta', $deltas)
-          ->execute();
-        db_delete('block_role')
-          ->condition('module', 'bean')
-          ->condition('delta', $deltas)
-          ->execute();
+        if (module_exists('block')) {
+          db_delete('block')
+            ->condition('module', 'bean')
+            ->condition('delta', $deltas)
+            ->execute();
+          db_delete('block_role')
+            ->condition('module', 'bean')
+            ->condition('delta', $deltas)
+            ->execute();
 
-        // @see node_form_block_custom_block_delete_submit()
-        db_delete('block_node_type')
-          ->condition('module', 'bean')
-          ->condition('delta', $deltas)
-          ->execute();
+          // @see node_form_block_custom_block_delete_submit()
+          db_delete('block_node_type')
+            ->condition('module', 'bean')
+            ->condition('delta', $deltas)
+            ->execute();
+        }
       }
       catch (Exception $e) {
         if (isset($transaction)) {
@@ -469,6 +497,17 @@ class BeanEntityAPIController extends EntityAPIControllerExportable {
       }
     }
     parent::delete($ids, $transaction);
+  }
+
+  protected function saveRevision($entity) {
+    global $user;
+
+    $org_uid = $entity->uid;
+    $entity->uid = $user->uid;
+    $return = parent::saveRevision($entity);
+    $entity->uid = $org_uid;
+
+    return $return;
   }
 }
 
