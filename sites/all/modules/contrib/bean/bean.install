@@ -66,6 +66,25 @@ function bean_schema() {
         'serialize' => TRUE,
         'description' => 'A serialized array of additional data related to this bean.',
       ),
+      'uid' => array(
+        'description' => 'The author of the revision.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when the entity was created.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when the entity was most recently saved.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
     ),
     'foreign keys' => array(
       'type' => array(
@@ -190,11 +209,21 @@ function bean_schema() {
  * Implements hook_uninstall().
  */
 function bean_uninstall() {
-  // Make sure bean.module is include.
-  require dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bean.module';
   // Bypass entity_load() as we cannot use it here.
-  foreach (bean_get_types() as $bean_type) {
-    field_attach_delete_bundle('bean', $bean_type->type);
+  foreach (field_info_bundles('bean') as $bean_type => $bean_info) {
+    field_attach_delete_bundle('bean', $bean_type);
+  }
+
+  //Remove shortcut links
+  if (module_exists('shortcut')) {
+    $shortcut_set = shortcut_default_set();
+    foreach ($shortcut_set->links as $shortcut_key => $shortcut) {
+      if ($shortcut['link_path'] == 'block/add' || $shortcut['link_path'] == 'admin/content/blocks') {
+        unset($shortcut_set->link[$shortcut_key]);
+        shortcut_set_save($shortcut_set);
+        menu_link_delete(NULL, $shortcut['link_path']);
+      }
+    }
   }
 }
 
@@ -215,7 +244,7 @@ function bean_install() {
     );
     $shortcut_set->links[] = array(
       'link_path' => 'admin/content/blocks',
-      'link_title' => $t('Add block'),
+      'link_title' => $t('Blocks'),
       'weight' => -18,
     );
 
@@ -230,17 +259,19 @@ function bean_disable() {
 
   // Delete any blocks
   // @see block_custom_block_delete_submit()
-  db_delete('block')
-    ->condition('module', 'bean')
-    ->execute();
-  db_delete('block_role')
-    ->condition('module', 'bean')
-    ->execute();
+  if (module_exists('block')) {
+    db_delete('block')
+      ->condition('module', 'bean')
+      ->execute();
+    db_delete('block_role')
+      ->condition('module', 'bean')
+      ->execute();
 
-  // @see node_form_block_custom_block_delete_submit()
-  db_delete('block_node_type')
-    ->condition('module', 'bean')
-    ->execute();
+    // @see node_form_block_custom_block_delete_submit()
+    db_delete('block_node_type')
+      ->condition('module', 'bean')
+      ->execute();
+  }
 }
 
 
@@ -325,7 +356,7 @@ function bean_update_7007(&$return) {
   $bean_revision = $schema['bean_revision'];
 
   /**
-   * Adding an unsigned attribute to our primary key. Because our primary key is an auto_increment, 
+   * Adding an unsigned attribute to our primary key. Because our primary key is an auto_increment,
    * we can't drop it without a MySQL error. Instead, we're doing a MySQL-specific call to perform
    * our alter, and leaving the Drupal-recommended way of doing things as default.
    *
@@ -374,5 +405,49 @@ function bean_update_7007(&$return) {
   // Add unique key back after populating our table.
   db_add_unique_key('bean', 'vid', array('vid'));
 
-  return t('Bean Revision table has been added.');
+  return $t('Bean Revision table has been added.');
 }
+
+/**
+ * Add uid, changed and created to bean table
+ */
+function bean_update_7010(&$sand) {
+  $t = get_t();
+  $schema = bean_schema();
+
+  db_add_field('bean', 'uid', $schema['bean_revision']['fields']['uid']);
+  db_add_field('bean', 'created', $schema['bean_revision']['fields']['created']);
+  db_add_field('bean', 'changed', $schema['bean_revision']['fields']['changed']);
+
+  $results = db_query("SELECT bid, uid, created, changed from {bean_revision} GROUP BY bid ORDER BY changed");
+  foreach($results as $row) {
+    db_update('bean')
+      ->fields(array(
+          'uid' => $row->uid,
+          'created' => $row->created,
+          'changed' => $row->changed,
+        ))
+      ->condition('bid', $row->bid)
+      ->execute();
+  }
+
+  return $t('Bean Table updated and data upgraded');
+}
+
+/**
+ * Clear the menu cache so that the new path for assigning the active revision
+ * will be picked up.
+ */
+function bean_update_7011() {
+  menu_cache_clear_all();
+  menu_rebuild();
+}
+
+/**
+ * Rebuild registry to ensure autoloading for renamed plugins.
+ */
+function bean_update_7012() {
+  registry_rebuild();
+  return t('Registry has been rebuilt');
+}
+
